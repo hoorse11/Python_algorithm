@@ -1,0 +1,58 @@
+import pdb
+from copy import deepcopy
+from collections import deque
+
+def InputData():
+	# N, M = map(int, input().split())
+	N = int(input())
+	Map = []
+	for _ in range(N):  # m번 loop을 돌면서 input을 arr에 append
+		# Map.append(list(input().split()))	# 띄어쓰기 단위로 나누기
+		Map.append(list(input().strip()))	# 음절 단위로 나누기
+	return N, Map
+
+def FloodFill(h1, w1, h2, w2):
+	# 맵 만들기
+	Map_tmp = [row[:] for row in Map]
+	# Map_tmp = deepcopy(Map)
+	Map_tmp[h1][w1] = Map[h2][w2]
+	Map_tmp[h2][w2] = Map[h1][w1]
+	visited = [[0] * N] * N
+	pdb.set_trace()
+
+	# bfs
+	queue = deque()
+	queue.append((0, 0))
+	while(queue):
+		(nh, nw) = queue.popleft()
+		for i in range(4):
+			h = nh + dh[i]
+			w = nw + dw[i]
+			if h < 0 or h >= N or w < 0 or w >= N:
+				continue
+			if visited[h][w] != 0:
+				continue
+			visited[h][w] = 1
+			queue.append((h, w))
+
+
+
+def Solve():
+	global sol
+	for h in range(N):
+		for w in range(N):
+			if h + 1 < N: FloodFill(h, w, h+1, w)
+			if w + 1 < N: FloodFill(h, w, h, w+1)
+
+N, Map = InputData()
+# N : 3
+# Map : [['C', 'C', 'P'], ['C', 'C', 'P'], ['P', 'P', 'C']]
+sol = -1
+dh = (1, -1, 0, 0)
+dw = (0, 0, 1, -1)
+
+Solve()
+
+
+# pdb.set_trace()
+
